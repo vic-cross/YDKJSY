@@ -189,3 +189,188 @@ export function create(title,author,pubDate) {
 
     return publicAPI;
 }
+
+//loop for...of
+
+let numeros = [1,2,3];
+
+for(let numero of numeros){
+    console.log(numero);
+}
+
+//existen 2 operadore simetricos para iteradores, spread y gather
+//aplican a arrays y listas de argumentos
+
+let valores = [... numeros];
+function doSomething(num){
+    console.log(num);
+}
+doSomething(...numeros);
+
+//Iterables en JS
+//Strings, Arrays, Maps, sets, etc
+
+//for ... of se puede aplicar a arrays
+for (let val of arr) {
+    console.log(`Array value: ${ val }`);
+}
+
+//al ser iterables, los arrays se pueden copiar, 
+//mediante el operador spread
+var arrCopy = [ ...arr ];
+
+//tambien se pueden ontener los elementos de uan cadena
+var greeting = "Hello world!";
+var chars = [ ...greeting ];
+chars;
+// [ "H", "e", "l", "l", "o", " ",
+//   "w", "o", "r", "l", "d", "!" ]
+
+//Un mapa es una estructura de datos llave/valor
+//se puede consumir en un for mediante la [desestructuracion de arrays]
+//generalmente se una un objeto como llave
+
+var mapa = new Map()
+mapa.set("obj1", "hola");
+mapa.set("obj2", "mundo");
+
+for(let [nomObj, obj] of mapa){
+    console.log(`${nomObj} contiene ${obj}`);
+}
+
+//iterador de solo valores, mediante el uso de values()
+for(let obj of mapa.values()){
+    console.log(obj);
+}
+
+//para obtener una pareja de indice y valor en arrays, mediante entries()
+let arrayNumeros = [1,2,3,4];
+for(let [idx, val] of arrayNumeros.entries()){
+    console.log(`${idx}: ${val}`);
+}
+
+//Closures
+//De manera practica se puede decir que un closure es cuando una funcion recuerda y sigue
+//accediendo a variables fuera de su scope
+
+function saludar(mensaje){
+    return function quien(nombre){
+        console.log(`${mensaje} para ${nombre}`);
+    }
+}
+
+let hola = saludar("Hola");// la funcion quien se asigna a hola, con el parametro mensaje = "Hola"
+let adios = saludar("adios");
+
+hola("Vic");
+adios("Vic");
+
+
+//La "la instancia" de las funciones mantiene el scope, este scope es el closure
+
+//lo que se mantiene en el closure no es un snapshot, si no las variables en su propio contexto
+//de tal manera que si la funcion hija modifica las variables de la funcion padre, estas se mantienen
+function contador(incremento=1){
+    let avance = 0;
+    return function incrementaContador(){
+        avance = avance + incremento;
+        return avance;
+    }
+}
+
+let incrementar1 = contador(1);
+let incrementar3 = contador(3);
+let incrementar10 = contador(10)
+
+console.log(incrementar1());
+console.log(incrementar1());
+console.log(incrementar3());
+console.log(incrementar3());
+console.log(incrementar10());
+
+//this esta definida por el contexto dinamico, en el que se esta ejecutando una funcion o
+//un valor es declarado, no depende de donde se coloca la funcion, si no donde se ejecuta
+
+function accion(horario){
+    return function saludar(){
+        console.log(`${horario} ${this.nombre}`);
+    }
+}
+
+let unaAccion = accion('Buenas tardes');
+
+unaAccion(); // Buenas tardes undefined
+
+//si se invoca desde un objeto
+
+let vic = {
+    nombre: 'Victor'
+};
+
+vic.unaAccion(); // Buenas tardes Victor
+
+//tambien se puede invocar con call
+
+unaAccion.call(vic); // Buenas tardes Victor
+
+//hay que tener en cuenta que es de vital importancia la comprension de las funciones this-aware
+//y el dinamismo del scope
+
+//Prototype
+
+//mientras this es una funcion de ejecucion, prototype es una funcion de objeto
+//en especifico una resolucion de acceso a una propiedad
+
+//un prototypo es la relacion "oculta" entre dos objetos, aunque existen metodos para exponerla y observarla
+//el prototipo suge cuando u objeto es creado y se vincula a un objeto existente
+
+//las cadenas de objetos se conocen como "prototype chain"
+
+//el motivo de esta relacion es delegar tareas a otro objeto, que no tiene naturalmente definidas dichas tareas
+
+let tarea = {
+    materia: "Matematicas",
+    tema: "polinomios"
+}
+
+tarea.toString(); //delgacion de tarea a Object.prototype, ya que tarea no define ningun miembro toString()
+
+//Para crear una relacion de prototipo se utiliza Object.create()
+
+let cafe = {
+    tipo: 'expreso'
+};
+
+let kaffe = Object.create(cafe);
+
+console.log(kaffe.tipo);
+
+//Si se modifica el valor de un objeto, afecta solo al objeto y no a la cadena completa
+
+let clase = {
+    horario: "tarde"
+}
+
+let otraClase = Object.create(clase);
+
+otraClase.horario = 'noche';
+
+console.log(clase.horario, otraClase.horario);
+
+//El uso de this, tambien tiene un importante uso en la delegacion de prototipos
+
+let programar = {
+    mensaje(){
+        console.log(`Estoy programando en ${this.lenguaje}`);
+    }
+}
+
+//usan prototipo de programar y asignan su propia propiedad lenguaje
+
+let programarEnJava = Object.create(programar);
+programarEnJava.lenguaje = 'java';
+programarEnJava.mensaje();
+
+let programarEnJS = Object.create(programar);
+programarEnJS.lenguaje = 'JS';
+programarEnJS.mensaje();
