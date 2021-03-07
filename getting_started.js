@@ -374,3 +374,97 @@ programarEnJava.mensaje();
 let programarEnJS = Object.create(programar);
 programarEnJS.lenguaje = 'JS';
 programarEnJS.mensaje();
+
+//Formas de declaracion
+
+// generator function declaration
+//function *two() { .. }
+
+// async function declaration
+//async function three() { .. }
+
+// async generator function declaration
+//async function *four() { .. }
+
+// named function export declaration (ES6 modules)
+//export function five() { .. }
+
+//funciones y metodos
+
+class SomethingKindaGreat {
+    // class methods
+    //coolMethod() { .. }   // no commas!
+    //boringMethod() { .. }
+}
+
+var EntirelyDifferent = {
+    // object methods
+    coolMethod() { .. },   // commas!
+    boringMethod() { .. },
+
+    // (anonymous) function expression property
+    oldSchool: function() { .. }
+};
+
+//Mejor forma de lidiar con la cohercion
+
+var x = "hello";
+
+if (Boolean(x) == true) {
+    // will run
+}
+
+// which is the same as:
+
+if (Boolean(x) === true) {
+    // will run
+}
+
+
+//Cadena de prototipos vs clases
+
+//Object.create()
+
+var Classroom = {
+    welcome() {
+        console.log("Welcome, students!");
+    }
+};
+
+var mathClass = Object.create(Classroom);
+
+mathClass.welcome();
+// Welcome, students!
+
+//clases, mediante el objeto prototype se conecta la funcion hello en la creacion del objeto
+//mathClass (new), esta opcion se desaconseja
+
+function Classroom() {
+    // ..
+}
+
+Classroom.prototype.welcome = function hello() {
+    console.log("Welcome, students!");
+};
+
+var mathClass = new Classroom();
+
+mathClass.welcome();
+// Welcome, students!
+
+//forma recomendada
+
+class Classroom {
+    constructor() {
+        // ..
+    }
+
+    welcome() {
+        console.log("Welcome, students!");
+    }
+}
+
+var mathClass = new Classroom();
+
+mathClass.welcome();
+// Welcome, students!
