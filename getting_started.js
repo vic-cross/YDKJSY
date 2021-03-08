@@ -399,11 +399,11 @@ class SomethingKindaGreat {
 
 var EntirelyDifferent = {
     // object methods
-    coolMethod() { .. },   // commas!
-    boringMethod() { .. },
+    //coolMethod() { .. },   // commas!
+    //boringMethod() { .. },
 
     // (anonymous) function expression property
-    oldSchool: function() { .. }
+    //oldSchool: function() { .. }
 };
 
 //Mejor forma de lidiar con la cohercion
